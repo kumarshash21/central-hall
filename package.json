@@ -1,0 +1,24 @@
+{
+  "name": "central-hall",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "./scripts/dev.sh",
+    "build": "next build",
+    "start": "next start -p 3005",
+    "db:tunnel": "ssh -i ~/.ssh/id_ed25519 -N -L 5433:localhost:5432 kumar_shashwat_greyorange_com@172.35.0.13"
+  },
+  "dependencies": {
+    "next": "^16.4.6",
+    "pg": "^8.23.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/pg": "^8.23.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "^7.0.2"
+  }
+}

@@ -1,0 +1,1 @@
+# central-hall initgit add README.mdgit commit -m first commitgit branch -M maingit remote add origin https://github.com/kumarshash21/central-hall.gitgit push -u origin main
