@@ -15,7 +15,8 @@ export async function startSession() {
   const exp = String(Date.now() + 8 * 3600_000);
   (await cookies()).set(NAME, `${exp}.${sign(exp)}`, {
     httpOnly: true, sameSite: "lax", path: "/", maxAge: 8 * 3600,
-    secure: process.env.NODE_ENV === "production",
+    // Only mark Secure when served over HTTPS (set COOKIE_SECURE=true); browsers drop Secure cookies on http://.
+    secure: process.env.COOKIE_SECURE === "true",
   });
 }
 export async function endSession() { (await cookies()).delete(NAME); }
