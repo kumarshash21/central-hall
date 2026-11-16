@@ -41,7 +41,7 @@ export default function ToolGrid({ tools, categories, admin = false, allCategori
     return tools.filter(
       (x) =>
         (cat === "All" || x.category_name === cat) &&
-        (!t || `${x.name} ${x.description} ${x.owner}`.toLowerCase().includes(t)),
+        (!t || `${x.name} ${x.description}`.toLowerCase().includes(t)),
     );
   }, [tools, text, cat]);
 
@@ -91,7 +91,6 @@ export default function ToolGrid({ tools, categories, admin = false, allCategori
               <div className="card-foot">
                 <div className="meta">
                   {t.category_name && <span className="tag">{t.category_name}</span>}
-                  {t.owner && <span className="tag">{t.owner}</span>}
                 </div>
                 <span className="go"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
               </div>

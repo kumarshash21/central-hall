@@ -48,10 +48,8 @@ export default function CardModal({ tool, categories, onClose }: {
           </label>
           <label>…or new category<input name="new_category" placeholder="Type to create" /></label>
         </div>
-        <div className="two">
-          <label>Owner / contact<input name="owner" defaultValue={tool?.owner} /></label>
-          <label>Access note<input name="access_note" defaultValue={tool?.access_note} placeholder="e.g. VPN only" /></label>
-        </div>
+        <input type="hidden" name="owner" defaultValue={tool?.owner} />
+        <label>Access note<input name="access_note" defaultValue={tool?.access_note} placeholder="e.g. VPN only" /></label>
         <label>Sort order (lower = earlier)<input name="sort_order" type="number" defaultValue={tool?.sort_order ?? 0} /></label>
         <div className="checks">
           <label className="check"><input type="checkbox" name="published" defaultChecked={tool?.published ?? true} /> Published</label>
