@@ -4,19 +4,18 @@ import { useRouter } from "next/navigation";
 import { saveCard } from "@/app/actions";
 import type { Tool, Category } from "@/lib/db";
 
-export default function CardModal({ tool, parentId, categories, onClose }: {
-  tool?: Tool; parentId: number | null; categories: Category[]; onClose: () => void;
+export default function CardModal({ tool, categories, onClose }: {
+  tool?: Tool; categories: Category[]; onClose: () => void;
 }) {
   const router = useRouter();
   const [error, setError] = useState("");
   const [pending, start] = useTransition();
-  const [isGroup, setIsGroup] = useState(tool?.is_group ?? false);
 
   function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
     start(async () => {
-      const r = await saveCard(tool?.id ?? null, parentId, fd);
+      const r = await saveCard(tool?.id ?? null, fd);
       if (r.error) return setError(r.error);
       router.refresh();
       onClose();
@@ -26,17 +25,11 @@ export default function CardModal({ tool, parentId, categories, onClose }: {
   return (
     <div className="overlay" onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
       <form className="modal form" onSubmit={submit}>
-        <h2>{tool ? "Edit card" : parentId ? "Add card to this page" : "Add card"}</h2>
+        <h2>{tool ? "Edit card" : "Add card"}</h2>
         <label>Name *<input name="name" required autoFocus defaultValue={tool?.name} /></label>
         <label>Description<textarea name="description" rows={2} defaultValue={tool?.description} /></label>
-        {!parentId && (
-          <label className="check">
-            <input type="checkbox" name="is_group" checked={isGroup} onChange={(e) => setIsGroup(e.target.checked)} />
-            Group card — opens a page that holds other cards (no link needed)
-          </label>
-        )}
-        <label>Link (URL){isGroup ? " — optional" : " *"}
-          <input name="url" required={!isGroup} defaultValue={tool?.url} placeholder="https://…" />
+        <label>Link (URL) *
+          <input name="url" required defaultValue={tool?.url} placeholder="https://…" />
         </label>
         <div className="two">
           <label>Icon (emoji)<input name="icon" defaultValue={tool?.icon ?? "🧰"} maxLength={8} /></label>

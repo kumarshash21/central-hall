@@ -13,29 +13,16 @@ export async function logout() { await endSession(); redirect("/"); }
 
 const refresh = () => revalidatePath("/", "layout");
 
-/** Add (id=null) or edit a card. parentId = the group page it lives on (null = home page). */
-export async function saveCard(id: number | null, parentId: number | null, fd: FormData): Promise<{ error?: string }> {
+/** Add (id=null) or edit a card. */
+export async function saveCard(id: number | null, fd: FormData): Promise<{ error?: string }> {
   await requireAdmin();
   const s = (k: string) => String(fd.get(k) ?? "").trim();
   const name = s("name");
   if (!name) return { error: "Name is required" };
 
-  let isGroup = fd.get("is_group") === "on" && !parentId; // groups only live on the home page
-  if (id) {
-    const [k] = await q("SELECT 1 FROM tools WHERE parent_id=$1 LIMIT 1", [id]);
-    if (k) isGroup = true; // can't un-group a card that still holds cards
-  }
-
   let url = s("url");
-  if (url || !isGroup) {
-    if (!/^https?:\/\//i.test(url)) url = "https://" + url;
-    try { new URL(url); } catch { return { error: "Please enter a valid link" }; }
-  }
-
-  if (parentId) {
-    const [p] = await q("SELECT is_group FROM tools WHERE id=$1 AND parent_id IS NULL", [parentId]);
-    if (!p?.is_group) return { error: "Parent must be a group card" };
-  }
+  if (!/^https?:\/\//i.test(url)) url = "https://" + url;
+  try { new URL(url); } catch { return { error: "Please enter a valid link" }; }
 
   // category: pick an existing one or type a new one
   let categoryId: number | null = s("category_id") ? Number(s("category_id")) : null;
@@ -48,14 +35,14 @@ export async function saveCard(id: number | null, parentId: number | null, fd: F
 
   const status = ["live", "beta", "deprecated"].includes(s("status")) ? s("status") : "live";
   const v = [name, s("description"), url, s("icon") || "🧰", categoryId, s("owner"), status,
-    s("access_note"), fd.get("featured") === "on", fd.get("published") !== null, Number(s("sort_order")) || 0, isGroup];
+    s("access_note"), fd.get("featured") === "on", fd.get("published") !== null, Number(s("sort_order")) || 0];
   if (id) {
     await q(`UPDATE tools SET name=$1,description=$2,url=$3,icon=$4,category_id=$5,owner=$6,status=$7,
-      access_note=$8,featured=$9,published=$10,sort_order=$11,is_group=$12,updated_at=now() WHERE id=$13`, [...v, id]);
+      access_note=$8,featured=$9,published=$10,sort_order=$11,updated_at=now() WHERE id=$12`, [...v, id]);
     await log("edit card", name);
   } else {
-    await q(`INSERT INTO tools(name,description,url,icon,category_id,owner,status,access_note,featured,published,sort_order,is_group,parent_id)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)`, [...v, parentId]);
+    await q(`INSERT INTO tools(name,description,url,icon,category_id,owner,status,access_note,featured,published,sort_order)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`, v);
     await log("add card", name);
   }
   refresh();

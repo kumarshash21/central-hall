@@ -107,7 +107,6 @@ select option{background:var(--surface);color:var(--ink)}
 /* ============ Bento grid ============ */
 .grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(214px,auto);grid-auto-flow:dense;gap:14px}
 .cardwrap{position:relative;display:flex;grid-column:span 1;animation:rise .7s var(--ease) both;animation-delay:calc(min(var(--i,0),16)*50ms + 120ms)}
-.cardwrap.wide{grid-column:span 2}
 .cardwrap.xl{grid-column:span 2;grid-row:span 2}
 .cardwrap>.card{flex:1;min-width:0}
 .card{--h:160;--mx:50%;--my:50%;position:relative;overflow:hidden;isolation:isolate;display:flex;flex-direction:column;padding:20px;border-radius:24px;background:var(--surface);border:1px solid var(--line);
@@ -143,14 +142,11 @@ select option{background:var(--surface);color:var(--ink)}
 .badge.beta::before{background:#fbbf24}.badge.deprecated::before{background:var(--danger)}
 @keyframes pulse{50%{opacity:.3}}
 /* wide + xl variants */
-.wide .card h3{font-size:24px}.wide .card p{-webkit-line-clamp:3;max-width:44ch;font-size:14px}
 .xl .card{padding:28px}
 .xl .icon{width:64px;height:64px;font-size:32px;border-radius:20px}
 .xl .card h3{font-size:clamp(30px,3.2vw,42px);line-height:1.02}
 .xl .card p{-webkit-line-clamp:6;font-size:15px;max-width:40ch}
 .xl .ghosticon{font-size:300px;right:-30px;bottom:-60px}
-.card.group{border-style:solid}
-.card.group .go{border-radius:10px}
 .empty{grid-column:1/-1;padding:72px 0;text-align:center;color:var(--muted);font-family:var(--display);font-size:22px;letter-spacing:-.02em;animation:rise .5s var(--ease) both}
 
 /* admin controls */
@@ -205,7 +201,7 @@ form.chip{margin:0}
 @media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){
   .grid{grid-template-columns:1fr;grid-auto-rows:minmax(190px,auto)}
-  .cardwrap.wide,.cardwrap.xl{grid-column:span 1}.cardwrap.xl{grid-row:span 1}
+  .cardwrap.xl{grid-column:span 1}.cardwrap.xl{grid-row:span 1}
   .two{grid-template-columns:1fr}.wrap{padding:24px 16px 72px}.hero .wrap{padding-top:56px}.stats{gap:28px}
   .xl .card h3{font-size:28px}.xl .ghosticon{font-size:200px}
 }

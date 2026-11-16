@@ -12,8 +12,8 @@ function hue(name?: string | null) {
   return h;
 }
 
-export default function ToolGrid({ tools, categories, admin = false, parentId = null, allCategories = [], title = "All tools" }: {
-  title?: string; tools: Tool[]; categories: string[]; admin?: boolean; parentId?: number | null; allCategories?: Category[];
+export default function ToolGrid({ tools, categories, admin = false, allCategories = [], title = "All tools" }: {
+  title?: string; tools: Tool[]; categories: string[]; admin?: boolean; allCategories?: Category[];
 }) {
   const router = useRouter();
   const [text, setText] = useState("");
@@ -46,8 +46,7 @@ export default function ToolGrid({ tools, categories, admin = false, parentId = 
   }, [tools, text, cat]);
 
   function remove(t: Tool) {
-    const warn = t.is_group ? ` This also deletes the ${t.child_count} card(s) inside it.` : "";
-    if (confirm(`Delete "${t.name}"?${warn}`)) start(async () => { await deleteTool(t.id); router.refresh(); });
+    if (confirm(`Delete "${t.name}"?`)) start(async () => { await deleteTool(t.id); router.refresh(); });
   }
 
   return (
@@ -74,9 +73,9 @@ export default function ToolGrid({ tools, categories, admin = false, parentId = 
       {list.length === 0 && !admin && <p className="empty" style={{ display: "block" }}>{text ? "Nothing matches that search." : "No cards here yet."}</p>}
       <div className="grid">
         {list.map((t, i) => (
-          <div key={t.id} className={`cardwrap ${t.featured ? "xl" : t.is_group ? "wide" : ""}`} style={{ "--i": i } as React.CSSProperties}>
-            <a className={t.is_group ? "card group" : "card"} onPointerMove={spot} style={{ "--h": hue(t.category_name) } as React.CSSProperties}
-              href={t.is_group ? `/group/${t.id}` : `/go/${t.id}`}>
+          <div key={t.id} className={`cardwrap ${t.featured ? "xl" : ""}`} style={{ "--i": i } as React.CSSProperties}>
+            <a className="card" onPointerMove={spot} style={{ "--h": hue(t.category_name) } as React.CSSProperties}
+              href={`/go/${t.id}`}>
               <span className="ghosticon" aria-hidden>{t.icon}</span>
               <div className="card-top">
                 <span className="icon">{t.icon}</span>
@@ -93,7 +92,6 @@ export default function ToolGrid({ tools, categories, admin = false, parentId = 
                 <div className="meta">
                   {t.category_name && <span className="tag">{t.category_name}</span>}
                   {t.owner && <span className="tag">{t.owner}</span>}
-                  {t.is_group && <span className="tag">{t.child_count} inside</span>}
                 </div>
                 <span className="go"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span>
               </div>
@@ -113,7 +111,7 @@ export default function ToolGrid({ tools, categories, admin = false, parentId = 
         )}
       </div>
       {modal && (
-        <CardModal tool={modal.tool} parentId={parentId} categories={allCategories} onClose={() => setModal(null)} />
+        <CardModal tool={modal.tool} categories={allCategories} onClose={() => setModal(null)} />
       )}
     </>
   );

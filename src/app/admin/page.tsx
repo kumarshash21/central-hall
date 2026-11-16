@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Admin() {
   await requireAdmin();
-  const tools = await q<Tool>(`${TOOL_SELECT} ORDER BY COALESCE(t.parent_id,t.id), t.parent_id NULLS FIRST, t.sort_order, t.name`);
+  const tools = await q<Tool>(`${TOOL_SELECT} ORDER BY t.sort_order, t.name`);
   const cats = await q<Category>("SELECT * FROM categories ORDER BY sort_order, name");
   const logs = await q<{ id: number; action: string; detail: string; created_at: string }>(
     "SELECT * FROM audit_log ORDER BY id DESC LIMIT 15");
@@ -27,13 +27,12 @@ export default async function Admin() {
       <section>
         <div className="row"><h2>Tools ({tools.length})</h2><Link className="btn" href="/">Edit cards on the site</Link></div>
         <div className="table-wrap"><table>
-          <thead><tr><th></th><th>Name</th><th>Under</th><th>Category</th><th>Status</th><th>Clicks</th><th>Visible</th><th></th></tr></thead>
+          <thead><tr><th></th><th>Name</th><th>Category</th><th>Status</th><th>Clicks</th><th>Visible</th><th></th></tr></thead>
           <tbody>
             {tools.map((t) => (
               <tr key={t.id}>
                 <td>{t.icon}</td>
-                <td><b>{t.name}</b>{t.is_group && <small className="muted"> · group · {t.child_count} inside</small>}<br /><small className="muted">{t.url}</small></td>
-                <td>{t.parent_id ? tools.find((p) => p.id === t.parent_id)?.name : "—"}</td>
+                <td><b>{t.name}</b><br /><small className="muted">{t.url}</small></td>
                 <td>{t.category_name ?? "—"}</td>
                 <td><span className={`badge ${t.status}`}>{t.status}</span></td>
                 <td>{t.clicks}</td>
