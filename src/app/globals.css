@@ -53,21 +53,21 @@ h1,h2,h3{font-family:var(--display);font-weight:600;letter-spacing:-.03em;margin
 .hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
   background-image:radial-gradient(var(--line-2) 1px,transparent 1px);background-size:28px 28px;
   mask-image:linear-gradient(#000 20%,transparent 85%);-webkit-mask-image:linear-gradient(#000 20%,transparent 85%)}
-.hero .wrap{padding-top:88px;padding-bottom:64px}
+.hero .wrap>div:first-child{display:flex;align-items:center;flex-wrap:wrap;gap:8px 20px}.hero .wrap{padding-top:14px;padding-bottom:14px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px 32px}
 .eyebrow{display:inline-flex;align-items:center;gap:10px;padding:6px 14px 6px 8px;border:1px solid var(--line-2);border-radius:99px;background:var(--glass);backdrop-filter:blur(8px);animation:rise .8s var(--ease) both}
 .eyebrow::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 22%,transparent);margin-left:4px;animation:pulse 2.4s ease-in-out infinite}
-.hero h1{font-size:clamp(48px,9vw,120px);line-height:.92;letter-spacing:-.05em;margin:28px 0 0;max-width:11ch;animation:rise .9s var(--ease) .08s both}
+.hero h1{font-size:clamp(26px,3.6vw,44px);line-height:1;letter-spacing:-.05em;margin:0;max-width:none;animation:rise .9s var(--ease) .08s both}
 .hero h1 span{background:linear-gradient(100deg,var(--a1),var(--a2) 50%,var(--a3));-webkit-background-clip:text;background-clip:text;color:transparent;background-size:200% 100%;animation:shine 8s ease-in-out infinite alternate}
 :root[data-theme="light"] .hero h1 span{background-image:linear-gradient(100deg,#0d9488,#65a30d 50%,#2563eb)}
 @keyframes shine{to{background-position:100% 0}}
-.hero p{margin:24px 0 0;max-width:48ch;font-size:18px;color:var(--ink-2);animation:rise .9s var(--ease) .16s both}
+.hero p{display:none;margin:24px 0 0;max-width:48ch;font-size:18px;color:var(--ink-2);animation:rise .9s var(--ease) .16s both}
 .hero .back{margin-bottom:28px}
 .back{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);transition:color .2s,gap .3s var(--ease)}
 .back:hover{color:var(--ink);gap:12px}
 .hero-icon{display:grid;place-items:center;width:72px;height:72px;font-size:36px;border-radius:22px;background:var(--surface);border:1px solid var(--line-2);margin-bottom:24px;animation:rise .7s var(--ease) both}
-.stats{display:flex;gap:40px;margin-top:44px;animation:rise .9s var(--ease) .24s both}
-.stats b{display:block;font-family:var(--display);font-size:32px;font-weight:600;letter-spacing:-.04em;line-height:1}
-.stats .mono{display:block;margin-top:6px}
+.stats{display:flex;gap:28px;margin-top:0;animation:rise .9s var(--ease) .24s both}
+.stats b{display:block;font-family:var(--display);font-size:24px;font-weight:600;letter-spacing:-.04em;line-height:1}
+.stats .mono{display:block;margin-top:4px}
 
 /* marquee */
 .marquee{border-block:1px solid var(--line);overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
@@ -202,7 +202,7 @@ form.chip{margin:0}
 @media(max-width:600px){
   .grid{grid-template-columns:1fr;grid-auto-rows:minmax(190px,auto)}
   .cardwrap.xl{grid-column:span 1}.cardwrap.xl{grid-row:span 1}
-  .two{grid-template-columns:1fr}.wrap{padding:24px 16px 72px}.hero .wrap{padding-top:56px}.stats{gap:28px}
+  .two{grid-template-columns:1fr}.wrap{padding:24px 16px 72px}.hero .wrap{padding-top:14px;padding-bottom:14px}.stats{gap:20px}
   .xl .card h3{font-size:28px}.xl .ghosticon{font-size:200px}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:.01ms!important}}
